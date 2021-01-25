@@ -1,1 +1,1 @@
-export { LiveSearch } from './src/LiveSearch.js';
+export { LiveSearchInput } from './src/live-search-input/LiveSearchInput.js';

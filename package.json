@@ -13,7 +13,9 @@
     "test": "web-test-runner --coverage",
     "test:watch": "web-test-runner --watch",
     "storybook": "start-storybook",
-    "storybook:build": "build-storybook"
+    "storybook:build": "build-storybook",
+    "wc:analyzer": "web-component-analyzer . --format json --outFile custom-elements.json",
+    "lint:test": "npm run lint && npm run test"
   },
   "dependencies": {
     "lit-element": "^2.2.1",
@@ -30,7 +32,8 @@
     "eslint-plugin-wc": "^1.2.0",
     "husky": "^1.0.0",
     "lint-staged": "^10.0.0",
-    "prettier": "^2.0.4"
+    "prettier": "^2.0.4",
+    "web-component-analyzer": "^1.1.6"
   },
   "eslintConfig": {
     "extends": [

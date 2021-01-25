@@ -1,9 +1,9 @@
 import { html } from 'lit-html';
-import '../live-search.js';
+import '../../../live-search-input.js';
 
 export default {
   title: 'LiveSearch',
-  component: 'live-search',
+  component: 'live-search-input',
   argTypes: {
     title: { control: 'text' },
     counter: { control: 'number' },
@@ -13,13 +13,13 @@ export default {
 
 function Template({ title = 'Hello world', counter = 5, textColor, slot }) {
   return html`
-    <live-search
+    <live-search-input
       style="--live-search-text-color: ${textColor || 'black'}"
       .title=${title}
       .counter=${counter}
     >
       ${slot}
-    </live-search>
+    </live-search-input>
   `;
 }
 

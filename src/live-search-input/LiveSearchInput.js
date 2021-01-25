@@ -1,6 +1,6 @@
 import { html, css, LitElement } from 'lit-element';
 
-export class LiveSearch extends LitElement {
+export class LiveSearchInput extends LitElement {
   static get styles() {
     return css`
       :host {
@@ -13,25 +13,21 @@ export class LiveSearch extends LitElement {
 
   static get properties() {
     return {
-      title: { type: String },
-      counter: { type: Number },
+      suggestions: { type: Array },
     };
   }
 
   constructor() {
     super();
-    this.title = 'Hey there';
-    this.counter = 5;
-  }
-
-  __increment() {
-    this.counter += 1;
+    this.suggestions = []
   }
 
   render() {
     return html`
-      <h2>${this.title} Nr. ${this.counter}!</h2>
-      <button @click=${this.__increment}>increment</button>
+      <input type="text"  @keyup=${this.onKeyup} />
     `;
+  }
+
+  onKeyup(detail) {
   }
 }
