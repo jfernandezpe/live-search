@@ -19,15 +19,24 @@ export class LiveSearchInput extends LitElement {
 
   constructor() {
     super();
-    this.suggestions = []
+    this.suggestions = [];
   }
 
   render() {
-    return html`
-      <input type="text"  @keyup=${this.onKeyup} />
-    `;
+    return html` <input type="text" @keyup=${this.onKeyup} /> `;
   }
 
   onKeyup(detail) {
+    this.trigger('live-search-string', { string: detail.target.value });
+  }
+
+  trigger(eventName, detail) {
+    this.dispatchEvent(
+      new CustomEvent(eventName, {
+        detail,
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 }
