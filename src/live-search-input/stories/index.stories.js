@@ -20,6 +20,21 @@ export const WithSuggestions = () => {
     'Pintor de puebles',
     'Pintor de gotelé',
     'Profesional de la pintura',
+    'Profesor de pintura y pintales',
+  ];
+
+  return html`
+    <live-search-input .suggestions=${suggestions}> </live-search-input>
+  `;
+};
+export const WithHighlight = () => {
+  const suggestions = [
+    'Profesional de la pintura',
+    'Profesor de pintura y pintales',
+    'Pintor',
+    'Pintor de paredes',
+    'Pintor de puebles',
+    'Pintor de gotelé',
   ];
 
   return html`

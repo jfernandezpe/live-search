@@ -1,5 +1,6 @@
 import { html, fixture, expect, nextFrame } from '@open-wc/testing';
 import sinon from 'sinon';
+import { LiveSearchInput } from '../LiveSearchInput.js';
 
 import '../../../live-search-input.js';
 
@@ -36,6 +37,7 @@ describe('LiveSearchInput', () => {
       'Pintor de puebles',
       'Pintor de gotelé',
       'Profesional de la pintura',
+      'Profesor de pintura y pintales',
     ];
     it('should display the suggestions', async () => {
       element.suggestions = suggestions;
@@ -47,9 +49,57 @@ describe('LiveSearchInput', () => {
         expect(li.innerText).to.be.equal(suggestions[index]);
       });
     });
-    it('should highlight the part of the sprint that match');
+    it('should highlight the part of the sprint that match', async () => {
+      element.suggestions = suggestions;
+      element.searchString = 'Pint';
+      await nextFrame();
+
+      const highlights = element.shadowRoot.querySelectorAll('li .highlight');
+
+      expect(highlights.length).to.be.equal(4);
+
+      highlights.forEach(highlight => {
+        expect(highlight.innerText).to.be.equal('Pint');
+      });
+
+      expect();
+    });
   });
   describe('when the user click a suggestion', () => {
     it('should dispatch the event "live-search"');
+  });
+
+  describe('split by search', () => {
+    it('should split the text by the search and case sensitive', () => {
+      const cases = [
+        {
+          text: 'Pintura',
+          search: 'Pint',
+          expectedInit: '',
+          expectedMatch: 'Pint',
+          expectedEnd: 'ura',
+        },
+        {
+          text: 'Profesional de pinturas y pintar',
+          search: 'pint',
+          expectedInit: 'Profesional de ',
+          expectedMatch: 'pint',
+          expectedEnd: 'uras y pintar',
+        },
+      ];
+
+      cases.forEach(
+        ({ text, search, expectedInit, expectedMatch, expectedEnd }, index) => {
+          const [init, match, end] = LiveSearchInput.splitBySearch(
+            text,
+            search
+          );
+
+          expect(init, `init in case ${index}`).to.be.equal(expectedInit);
+          expect(match, `match in case ${index}`).to.be.equal(expectedMatch);
+          expect(end, `match in case ${index}`).to.be.equal(expectedEnd);
+        }
+      );
+    });
   });
 });
