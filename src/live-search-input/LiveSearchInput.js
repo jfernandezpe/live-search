@@ -17,6 +17,7 @@ export class LiveSearchInput extends LitElement {
   static get properties() {
     return {
       suggestions: { type: Array },
+      searchString: { type: String },
     };
   }
 
@@ -35,25 +36,26 @@ export class LiveSearchInput extends LitElement {
 
       <ul>
         ${this.suggestions.map(suggestion => {
-          return html`<li>
+          return html`
             ${LiveSearchInput.renderHighlightSuggestion(
               suggestion,
               this.searchString
             )}
-          </li>`;
+          `;
         })}
       </ul>
     `;
   }
 
   static renderHighlightSuggestion(text, search) {
-    if (!text.includes(search)) {
-      return html`${text}`;
+    if (text.includes(search)) {
+      const [init, match, end] = LiveSearchInput.splitBySearch(text, search);
+
+      return html`<li>
+        ${init}<span class="highlight">${match}</span>${end}
+      </li>`;
     }
-
-    const [init, match, end] = LiveSearchInput.splitBySearch(text, search);
-
-    return html`${init}<span class="highlight">${match}</span>${end}`;
+    return html``;
   }
 
   static splitBySearch(text, search) {
@@ -66,7 +68,8 @@ export class LiveSearchInput extends LitElement {
   }
 
   onKeyup(detail) {
-    this.trigger('live-search-string', { string: detail.target.value });
+    this.searchString = detail?.target?.value;
+    this.trigger('live-search-string', { string: this.searchString });
   }
 
   trigger(eventName, detail) {

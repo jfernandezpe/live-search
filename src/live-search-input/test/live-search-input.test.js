@@ -4,6 +4,12 @@ import { LiveSearchInput } from '../LiveSearchInput.js';
 
 import '../../../live-search-input.js';
 
+const fakeKeyup = (element, value) => {
+  const fakeEvent = { target: { value } };
+
+  element.onKeyup(fakeEvent);
+};
+
 describe('LiveSearchInput', () => {
   let element;
   beforeEach(async () => {
@@ -18,11 +24,9 @@ describe('LiveSearchInput', () => {
     it('should dispatch the event "live-search-string"', () => {
       const fakeValue = 'some fake search value';
       const eventStub = sinon.stub();
-      const fakeEvent = { target: { value: fakeValue } };
       element.addEventListener('live-search-string', eventStub);
 
-      // fake event
-      element.onKeyup(fakeEvent);
+      fakeKeyup(element, fakeValue);
 
       expect(eventStub).to.have.been.calledOnce;
       expect(eventStub).to.have.been.calledWithMatch({
@@ -36,11 +40,11 @@ describe('LiveSearchInput', () => {
       'Pintor de paredes',
       'Pintor de puebles',
       'Pintor de gotelé',
-      'Profesional de la pintura',
-      'Profesor de pintura y pintales',
     ];
     it('should display the suggestions', async () => {
       element.suggestions = suggestions;
+      fakeKeyup(element, 'Pint');
+
       await nextFrame();
 
       const lis = element.shadowRoot.querySelectorAll('li');
@@ -49,20 +53,35 @@ describe('LiveSearchInput', () => {
         expect(li.innerText).to.be.equal(suggestions[index]);
       });
     });
-    it('should highlight the part of the sprint that match', async () => {
+    it('should highlight the part of the string that match', async () => {
       element.suggestions = suggestions;
-      element.searchString = 'Pint';
+      fakeKeyup(element, 'Pint');
       await nextFrame();
 
       const highlights = element.shadowRoot.querySelectorAll('li .highlight');
 
-      expect(highlights.length).to.be.equal(4);
+      expect(highlights.length).to.be.equal(suggestions.length);
 
       highlights.forEach(highlight => {
         expect(highlight.innerText).to.be.equal('Pint');
       });
 
       expect();
+    });
+    it('should hide the suggestions that do not match', async () => {
+      element.suggestions = [
+        ...suggestions,
+        'Profesional de la pintura',
+        'Trabajos de pintura',
+      ];
+      fakeKeyup(element, 'Pint');
+      await nextFrame();
+
+      const lis = element.shadowRoot.querySelectorAll('li');
+      expect(lis.length).to.be.equal(suggestions.length);
+      lis.forEach((li, index) => {
+        expect(li.innerText).to.be.equal(suggestions[index]);
+      });
     });
   });
   describe('when the user click a suggestion', () => {
