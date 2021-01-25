@@ -23,7 +23,17 @@ export class LiveSearchInput extends LitElement {
   }
 
   render() {
-    return html` <input type="text" @keyup=${this.onKeyup} /> `;
+    return html`
+      <label
+        >Encuentra profesionales de confianza
+        <input type="text" @keyup=${this.onKeyup} />
+      </label>
+      <ul>
+        ${this.suggestions.map(suggestion => {
+          return html`<li>${suggestion}</li>`;
+        })}
+      </ul>
+    `;
   }
 
   onKeyup(detail) {

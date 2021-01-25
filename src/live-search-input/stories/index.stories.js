@@ -5,40 +5,24 @@ export default {
   title: 'LiveSearch',
   component: 'live-search-input',
   argTypes: {
-    title: { control: 'text' },
-    counter: { control: 'number' },
-    textColor: { control: 'color' },
+    suggestions: { control: 'array' },
   },
 };
 
-function Template({ title = 'Hello world', counter = 5, textColor, slot }) {
+export const Regular = () => {
+  return html` <live-search-input> </live-search-input> `;
+};
+
+export const WithSuggestions = () => {
+  const suggestions = [
+    'Pintor',
+    'Pintor de paredes',
+    'Pintor de puebles',
+    'Pintor de gotelé',
+    'Profesional de la pintura',
+  ];
+
   return html`
-    <live-search-input
-      style="--live-search-text-color: ${textColor || 'black'}"
-      .title=${title}
-      .counter=${counter}
-    >
-      ${slot}
-    </live-search-input>
+    <live-search-input .suggestions=${suggestions}> </live-search-input>
   `;
-}
-
-export const Regular = Template.bind({});
-
-export const CustomTitle = Template.bind({});
-CustomTitle.args = {
-  title: 'My title',
-};
-
-export const CustomCounter = Template.bind({});
-CustomCounter.args = {
-  counter: 123456,
-};
-
-export const SlottedContent = Template.bind({});
-SlottedContent.args = {
-  slot: html`<p>Slotted content</p>`,
-};
-SlottedContent.argTypes = {
-  slot: { table: { disable: true } },
 };

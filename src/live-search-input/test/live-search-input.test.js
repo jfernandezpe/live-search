@@ -30,8 +30,24 @@ describe('LiveSearchInput', () => {
     });
   });
   describe('when the component receives a list of suggestions', () => {
-    it('should display the suggestions');
-    it('should highlight the string that matach');
+    const suggestions = [
+      'Pintor',
+      'Pintor de paredes',
+      'Pintor de puebles',
+      'Pintor de gotelé',
+      'Profesional de la pintura',
+    ];
+    it('should display the suggestions', async () => {
+      element.suggestions = suggestions;
+      await nextFrame();
+
+      const lis = element.shadowRoot.querySelectorAll('li');
+      expect(lis.length).to.be.equal(suggestions.length);
+      lis.forEach((li, index) => {
+        expect(li.innerText).to.be.equal(suggestions[index]);
+      });
+    });
+    it('should highlight the part of the sprint that match');
   });
   describe('when the user click a suggestion', () => {
     it('should dispatch the event "live-search"');
