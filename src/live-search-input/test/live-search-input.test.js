@@ -84,8 +84,13 @@ describe('LiveSearchInput', () => {
       });
     });
   });
-  describe('when the user click a suggestion', () => {
-    it('should dispatch the event "live-search"');
+  describe('when the user confirm a suggestion', () => {
+    describe('by clicking one', () => {
+      it('should dispatch the event "live-search"');
+    });
+    describe('by clicking one', () => {
+      it('should dispatch the event "live-search"');
+    });
   });
 
   describe('split by search', () => {

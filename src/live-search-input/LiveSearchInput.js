@@ -29,17 +29,18 @@ export class LiveSearchInput extends LitElement {
 
   render() {
     return html`
-      <label
+      <label id="label"
         >Encuentra profesionales de confianza
         <input type="text" @keyup=${this.onKeyup} />
       </label>
 
-      <ul>
-        ${this.suggestions.map(suggestion => {
+      <ul role="listbox" aria-labelledby="label">
+        ${this.suggestions.map((suggestion, index) => {
           return html`
             ${LiveSearchInput.renderHighlightSuggestion(
               suggestion,
-              this.searchString
+              this.searchString,
+              index
             )}
           `;
         })}
@@ -47,11 +48,11 @@ export class LiveSearchInput extends LitElement {
     `;
   }
 
-  static renderHighlightSuggestion(text, search) {
+  static renderHighlightSuggestion(text, search, index) {
     if (text.includes(search)) {
       const [init, match, end] = LiveSearchInput.splitBySearch(text, search);
 
-      return html`<li>
+      return html`<li id="listbox-${index}" role="option" aria-selected="false">
         ${init}<span class="highlight">${match}</span>${end}
       </li>`;
     }
